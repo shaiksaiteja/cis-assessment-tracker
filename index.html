@@ -531,6 +531,86 @@
             padding: 40px;
             color: #718096;
         }
+        
+        .bar-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .bar-chart-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .bar-label {
+            min-width: 100px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+        
+        .bar-container {
+            flex: 1;
+            height: 30px;
+            background: #e2e8f0;
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .bar-fill {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            color: white;
+            font-weight: 600;
+            font-size: 12px;
+            transition: width 0.5s;
+        }
+        
+        .action-item {
+            padding: 16px;
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            border-radius: 6px;
+            margin-bottom: 12px;
+        }
+        
+        .action-item.critical {
+            background: #fee2e2;
+            border-left-color: #dc2626;
+        }
+        
+        .action-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 8px;
+        }
+        
+        .action-item-title {
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 14px;
+        }
+        
+        .action-item-badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            background: #dc2626;
+            color: white;
+        }
+        
+        .action-item-details {
+            font-size: 13px;
+            color: #718096;
+        }
     </style>
 </head>
 <body>
@@ -581,10 +661,89 @@
                     </div>
                 </div>
 
-                <div class="chart-section">
-                    <h3>Progress</h3>
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progressBar" style="width: 0%">0%</div>
+                <div class="dashboard-grid" style="grid-template-columns: 1fr 1fr;">
+                    <div class="chart-section">
+                        <h3>Progress Overview</h3>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressBar" style="width: 0%">0%</div>
+                        </div>
+                    </div>
+
+                    <div class="chart-section">
+                        <h3>Control Status Distribution</h3>
+                        <div style="display: flex; align-items: center; gap: 30px;">
+                            <canvas id="statusPieChart" width="200" height="200"></canvas>
+                            <div class="legend" style="flex-direction: column; align-items: flex-start;">
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background: #22c55e;"></div>
+                                    <span id="pieImplemented">0 Fully Implemented</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background: #eab308;"></div>
+                                    <span id="piePartial">0 Partially Implemented</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background: #dc2626;"></div>
+                                    <span id="pieNotImplemented">0 Not Implemented</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background: #9ca3af;"></div>
+                                    <span id="pieNA">0 Not Applicable</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background: #cbd5e1;"></div>
+                                    <span id="pieUnassessed">0 Not Assessed</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid" style="grid-template-columns: 1fr 1fr;">
+                    <div class="chart-section">
+                        <h3>Risk Distribution</h3>
+                        <div id="riskChart" style="margin-top: 20px;"></div>
+                        <div class="legend" style="margin-top: 20px;">
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #dc2626;"></div>
+                                <span id="criticalRiskCount">0 Critical</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #f59e0b;"></div>
+                                <span id="highRiskCount">0 High</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #eab308;"></div>
+                                <span id="mediumRiskCount">0 Medium</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #22c55e;"></div>
+                                <span id="lowRiskCount">0 Low</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chart-section">
+                        <h3>Priority Timeline</h3>
+                        <div id="priorityChart" style="margin-top: 20px;"></div>
+                        <div class="legend" style="margin-top: 20px;">
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #dc2626;"></div>
+                                <span id="immediatePriorityCount">0 Immediate</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #f59e0b;"></div>
+                                <span id="shortPriorityCount">0 Short-term</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #eab308;"></div>
+                                <span id="mediumPriorityCount">0 Medium-term</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #22c55e;"></div>
+                                <span id="longPriorityCount">0 Long-term</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -598,6 +757,7 @@
                                     <th>Total</th>
                                     <th>Assessed</th>
                                     <th>Compliance</th>
+                                    <th>Progress Bar</th>
                                 </tr>
                             </thead>
                             <tbody id="summaryTable"></tbody>
@@ -1462,9 +1622,11 @@
             var framework = getCurrentFramework();
             if (!framework) return;
             
-            var implemented = 0, partial = 0, notImplemented = 0;
+            var implemented = 0, partial = 0, notImplemented = 0, notApplicable = 0, unassessed = 0;
             var total = 0;
             var categories = {};
+            var riskCounts = {critical: 0, high: 0, medium: 0, low: 0};
+            var priorityCounts = {immediate: 0, short: 0, medium: 0, long: 0};
             
             for (var i = 0; i < framework.controls.length; i++) {
                 var ctrl = framework.controls[i];
@@ -1488,12 +1650,31 @@
                         categories[ctrl.category].score += 0.5;
                     } else if (assess.status === 'not-implemented') {
                         notImplemented++;
+                    } else if (assess.status === 'na') {
+                        notApplicable++;
+                    }
+                } else {
+                    unassessed++;
+                }
+                
+                // Count risks
+                if (assess.risk) {
+                    if (riskCounts[assess.risk] !== undefined) {
+                        riskCounts[assess.risk]++;
+                    }
+                }
+                
+                // Count priorities
+                if (assess.priority) {
+                    if (priorityCounts[assess.priority] !== undefined) {
+                        priorityCounts[assess.priority]++;
                     }
                 }
             }
             
             var score = framework.controls.length > 0 ? Math.round((total / framework.controls.length) * 100) : 0;
             
+            // Update main metrics
             document.getElementById('overallScore').textContent = score + '%';
             document.getElementById('implementedCount').textContent = implemented;
             document.getElementById('partialCount').textContent = partial;
@@ -1501,13 +1682,138 @@
             document.getElementById('progressBar').style.width = score + '%';
             document.getElementById('progressBar').textContent = score + '%';
             
+            // Update pie chart
+            drawPieChart(implemented, partial, notImplemented, notApplicable, unassessed);
+            
+            // Update pie chart legend
+            document.getElementById('pieImplemented').textContent = implemented + ' Fully Implemented';
+            document.getElementById('piePartial').textContent = partial + ' Partially Implemented';
+            document.getElementById('pieNotImplemented').textContent = notImplemented + ' Not Implemented';
+            document.getElementById('pieNA').textContent = notApplicable + ' Not Applicable';
+            document.getElementById('pieUnassessed').textContent = unassessed + ' Not Assessed';
+            
+            // Update risk chart
+            var totalRisk = riskCounts.critical + riskCounts.high + riskCounts.medium + riskCounts.low;
+            var riskChartHtml = '<div class="bar-chart">';
+            riskChartHtml += createBarChartItem('Critical', riskCounts.critical, totalRisk, '#dc2626');
+            riskChartHtml += createBarChartItem('High', riskCounts.high, totalRisk, '#f59e0b');
+            riskChartHtml += createBarChartItem('Medium', riskCounts.medium, totalRisk, '#eab308');
+            riskChartHtml += createBarChartItem('Low', riskCounts.low, totalRisk, '#22c55e');
+            riskChartHtml += '</div>';
+            document.getElementById('riskChart').innerHTML = riskChartHtml;
+            
+            document.getElementById('criticalRiskCount').textContent = riskCounts.critical + ' Critical';
+            document.getElementById('highRiskCount').textContent = riskCounts.high + ' High';
+            document.getElementById('mediumRiskCount').textContent = riskCounts.medium + ' Medium';
+            document.getElementById('lowRiskCount').textContent = riskCounts.low + ' Low';
+            
+            // Update priority chart
+            var totalPriority = priorityCounts.immediate + priorityCounts.short + priorityCounts.medium + priorityCounts.long;
+            var priorityChartHtml = '<div class="bar-chart">';
+            priorityChartHtml += createBarChartItem('Immediate', priorityCounts.immediate, totalPriority, '#dc2626');
+            priorityChartHtml += createBarChartItem('Short-term', priorityCounts.short, totalPriority, '#f59e0b');
+            priorityChartHtml += createBarChartItem('Medium-term', priorityCounts.medium, totalPriority, '#eab308');
+            priorityChartHtml += createBarChartItem('Long-term', priorityCounts.long, totalPriority, '#22c55e');
+            priorityChartHtml += '</div>';
+            document.getElementById('priorityChart').innerHTML = priorityChartHtml;
+            
+            document.getElementById('immediatePriorityCount').textContent = priorityCounts.immediate + ' Immediate';
+            document.getElementById('shortPriorityCount').textContent = priorityCounts.short + ' Short-term';
+            document.getElementById('mediumPriorityCount').textContent = priorityCounts.medium + ' Medium-term';
+            document.getElementById('longPriorityCount').textContent = priorityCounts.long + ' Long-term';
+            
+            // Update category summary table
             var summaryHtml = '';
             for (var cat in categories) {
                 var stats = categories[cat];
                 var compliance = stats.total > 0 ? Math.round((stats.score / stats.total) * 100) : 0;
-                summaryHtml += '<tr><td>' + cat + '</td><td>' + stats.total + '</td><td>' + stats.assessed + '</td><td><strong>' + compliance + '%</strong></td></tr>';
+                summaryHtml += '<tr><td>' + cat + '</td><td>' + stats.total + '</td><td>' + stats.assessed + '</td><td><strong>' + compliance + '%</strong></td>';
+                summaryHtml += '<td><div class="bar-container" style="height: 20px;"><div class="bar-fill" style="width: ' + compliance + '%; background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); font-size: 11px; justify-content: center;">' + (compliance > 15 ? compliance + '%' : '') + '</div></div></td></tr>';
             }
             document.getElementById('summaryTable').innerHTML = summaryHtml;
+        }
+        
+        function drawPieChart(implemented, partial, notImplemented, notApplicable, unassessed) {
+            var canvas = document.getElementById('statusPieChart');
+            var ctx = canvas.getContext('2d');
+            var centerX = canvas.width / 2;
+            var centerY = canvas.height / 2;
+            var radius = 80;
+            
+            var total = implemented + partial + notImplemented + notApplicable + unassessed;
+            
+            if (total === 0) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#e2e8f0';
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+                ctx.fill();
+                
+                ctx.fillStyle = '#718096';
+                ctx.font = '14px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('No Data', centerX, centerY);
+                return;
+            }
+            
+            var data = [
+                {value: implemented, color: '#22c55e', label: 'Implemented'},
+                {value: partial, color: '#eab308', label: 'Partial'},
+                {value: notImplemented, color: '#dc2626', label: 'Not Impl.'},
+                {value: notApplicable, color: '#9ca3af', label: 'N/A'},
+                {value: unassessed, color: '#cbd5e1', label: 'Unassessed'}
+            ];
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            var currentAngle = -Math.PI / 2;
+            
+            for (var i = 0; i < data.length; i++) {
+                var slice = data[i];
+                var sliceAngle = (slice.value / total) * 2 * Math.PI;
+                
+                if (slice.value > 0) {
+                    ctx.fillStyle = slice.color;
+                    ctx.beginPath();
+                    ctx.moveTo(centerX, centerY);
+                    ctx.arc(centerX, centerY, radius, currentAngle, currentAngle + sliceAngle);
+                    ctx.closePath();
+                    ctx.fill();
+                    
+                    ctx.strokeStyle = '#ffffff';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                    
+                    currentAngle += sliceAngle;
+                }
+            }
+            
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius * 0.5, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            ctx.fillStyle = '#2d3748';
+            ctx.font = 'bold 20px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(total, centerX, centerY - 8);
+            
+            ctx.font = '12px Arial';
+            ctx.fillStyle = '#718096';
+            ctx.fillText('Controls', centerX, centerY + 10);
+        }
+        
+        function createBarChartItem(label, value, total, color) {
+            var percentage = total > 0 ? Math.round((value / total) * 100) : 0;
+            var html = '<div class="bar-chart-item">';
+            html += '<div class="bar-label">' + label + '</div>';
+            html += '<div class="bar-container">';
+            html += '<div class="bar-fill" style="width: ' + percentage + '%; background: ' + color + ';">' + value + '</div>';
+            html += '</div>';
+            html += '</div>';
+            return html;
         }
 
         function switchTab(tabName) {
