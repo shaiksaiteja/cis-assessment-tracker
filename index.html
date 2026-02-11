@@ -3,22 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CIS Assessment Tracker with Dashboard</title>
+    <title>Enterprise Compliance Tracker</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #f5f7fa;
             padding: 20px;
         }
+        
         .container {
             max-width: 1400px;
             margin: 0 auto;
         }
+        
         .header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -26,41 +29,205 @@
             border-radius: 10px;
             margin-bottom: 30px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
         }
+        
         .header h1 {
             font-size: 28px;
             margin-bottom: 10px;
         }
+        
         .header p {
             opacity: 0.9;
             font-size: 14px;
         }
+        
+        .btn {
+            padding: 10px 20px;
+            background: white;
+            color: #667eea;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5568d3;
+        }
+        
+        .btn-secondary {
+            background: #718096;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #4a5568;
+        }
+        
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+        
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+        
+        .view {
+            display: none;
+        }
+        
+        .view.active {
+            display: block;
+        }
+        
+        .framework-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .framework-card {
+            background: white;
+            border-radius: 10px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            border-left: 4px solid #667eea;
+        }
+        
+        .framework-card:hover {
+            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+        }
+        
+        .framework-card h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+            color: #2d3748;
+        }
+        
+        .framework-card p {
+            font-size: 13px;
+            color: #718096;
+            margin-bottom: 16px;
+            min-height: 40px;
+        }
+        
+        .framework-stats {
+            display: flex;
+            gap: 20px;
+            padding-top: 16px;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .stat {
+            flex: 1;
+        }
+        
+        .stat-label {
+            font-size: 11px;
+            color: #718096;
+            text-transform: uppercase;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #667eea;
+            margin-top: 4px;
+        }
+        
+        .card-actions {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            gap: 8px;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+        
+        .empty-state h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+            color: #2d3748;
+        }
+        
+        .empty-state p {
+            font-size: 14px;
+            color: #718096;
+            margin-bottom: 24px;
+        }
+        
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #718096;
+        }
+        
+        .breadcrumb a {
+            color: #667eea;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
         .tabs {
             display: flex;
             gap: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 0;
             border-bottom: 2px solid #e1e8ed;
-            padding-bottom: 0;
         }
-
+        
         .tab {
             padding: 12px 24px;
             background: white;
-            border: none;
+            border: 2px solid transparent;
             cursor: pointer;
             font-size: 14px;
             font-weight: 500;
             color: #5a6c7d;
             border-radius: 8px 8px 0 0;
-            transition: all 0.3s;
-            border: 2px solid transparent;
+            transition: all 0.2s;
             border-bottom: none;
         }
-
-        .tab:hover {
-            background: #f8f9fa;
-        }
-
+        
         .tab.active {
             background: white;
             color: #667eea;
@@ -69,7 +236,7 @@
             position: relative;
             bottom: -2px;
         }
-
+        
         .tab-content {
             display: none;
             background: white;
@@ -77,203 +244,97 @@
             border-radius: 0 10px 10px 10px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-
+        
         .tab-content.active {
             display: block;
         }
-
-        /* Dashboard Styles */
+        
         .dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
             margin-bottom: 30px;
         }
-
+        
         .metric-card {
             background: white;
             padding: 24px;
             border-radius: 10px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
             border-left: 4px solid #667eea;
-            cursor: pointer;
-            transition: all 0.3s ease;
         }
-
-        .metric-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-
-        .metric-card.active {
-            background: #f0f4ff;
-            border-left-width: 6px;
-        }
-
+        
         .metric-card h3 {
-            font-size: 14px;
-            color: #5a6c7d;
-            margin-bottom: 12px;
+            font-size: 12px;
+            color: #718096;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            margin-bottom: 12px;
         }
-
+        
         .metric-value {
-            font-size: 36px;
+            font-size: 32px;
             font-weight: 700;
             color: #2d3748;
-            margin-bottom: 8px;
         }
-
-        .metric-label {
-            font-size: 13px;
-            color: #718096;
-        }
-
-        .chart-container {
-            background: white;
-            padding: 24px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            margin-bottom: 20px;
-        }
-
-        .chart-container h3 {
-            font-size: 16px;
-            color: #2d3748;
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-
+        
         .progress-bar {
             width: 100%;
             height: 40px;
             background: #e2e8f0;
             border-radius: 20px;
             overflow: hidden;
-            position: relative;
             margin: 20px 0;
         }
-
+        
         .progress-fill {
             height: 100%;
             background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-            transition: width 0.5s ease;
+            transition: width 0.5s;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             font-weight: 600;
-            font-size: 14px;
         }
-
-        .bar-chart {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .bar-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 6px;
-            transition: background 0.2s;
-        }
-
-        .bar-item:hover {
-            background: #f7fafc;
-        }
-
-        .bar-item.active {
-            background: #e8edff;
-        }
-
-        .bar-label {
-            min-width: 180px;
-            font-size: 13px;
-            color: #4a5568;
-            font-weight: 500;
-        }
-
-        .bar-bg {
-            flex: 1;
-            height: 30px;
-            background: #f7fafc;
-            border-radius: 15px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .bar-fill {
-            height: 100%;
-            border-radius: 15px;
-            transition: width 0.5s ease;
-            display: flex;
-            align-items: center;
-            padding-left: 12px;
-            color: white;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        /* Assessment Table */
-        .controls-table {
-            width: 100%;
+        
+        .table-container {
             overflow-x: auto;
         }
-
+        
         table {
             width: 100%;
             border-collapse: collapse;
             font-size: 13px;
         }
-
+        
         thead {
             background: #f7fafc;
-            position: sticky;
-            top: 0;
-            z-index: 10;
         }
-
+        
         th {
             padding: 14px 12px;
             text-align: left;
             font-weight: 600;
             color: #2d3748;
             border-bottom: 2px solid #e2e8f0;
-            white-space: nowrap;
         }
-
+        
         td {
             padding: 12px;
             border-bottom: 1px solid #f0f0f0;
-            vertical-align: top;
         }
-
-        tr:hover {
+        
+        tbody tr:hover {
             background: #fafbfc;
         }
-
+        
+        tbody tr.filtered-out {
+            display: none;
+        }
+        
+        input[type="text"],
+        textarea,
         select {
-            width: 100%;
-            padding: 8px 12px;
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
-            font-size: 13px;
-            background: white;
-            cursor: pointer;
-            transition: border-color 0.2s;
-        }
-
-        select:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        input[type="text"], textarea {
             width: 100%;
             padding: 8px 12px;
             border: 1px solid #e2e8f0;
@@ -281,215 +342,103 @@
             font-size: 13px;
             font-family: inherit;
         }
-
+        
         textarea {
             min-height: 60px;
             resize: vertical;
         }
-
-        .status-badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .status-implemented {
-            background: #c6f6d5;
-            color: #22543d;
-        }
-
-        .status-partial {
-            background: #fef5e7;
-            color: #975a16;
-        }
-
-        .status-not-implemented {
-            background: #fed7d7;
-            color: #742a2a;
-        }
-
-        .status-na {
-            background: #e2e8f0;
-            color: #4a5568;
-        }
-
-        .risk-critical {
-            background: #dc2626;
-        }
-
-        .risk-high {
-            background: #f97316;
-        }
-
-        .risk-medium {
-            background: #eab308;
-        }
-
-        .risk-low {
-            background: #22c55e;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            background: #667eea;
-            color: white;
-            border: none;
-            border-radius: 6px;
+        
+        select {
+            background: white;
             cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            transition: background 0.2s;
         }
-
-        .btn:hover {
-            background: #5568d3;
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
         }
-
-        .btn-secondary {
-            background: #718096;
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
         }
-
-        .btn-secondary:hover {
-            background: #4a5568;
+        
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-
+        
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-header h2 {
+            font-size: 20px;
+            color: #2d3748;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #718096;
+            line-height: 1;
+        }
+        
+        .close-btn:hover {
+            color: #2d3748;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 13px;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 24px;
+        }
+        
         .action-buttons {
             display: flex;
             gap: 10px;
             margin-bottom: 20px;
             flex-wrap: wrap;
-            align-items: center;
         }
-
-        .filter-section {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            flex-wrap: wrap;
-            padding: 16px;
-            background: #f7fafc;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-
-        .filter-label {
-            font-weight: 600;
-            font-size: 13px;
-            color: #2d3748;
-        }
-
-        .filter-select {
-            padding: 8px 12px;
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
-            font-size: 13px;
-            background: white;
-            cursor: pointer;
-            min-width: 150px;
-        }
-
-        .clear-filter-btn {
-            padding: 8px 16px;
-            background: #ef4444;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-            transition: background 0.2s;
-        }
-
-        .clear-filter-btn:hover {
-            background: #dc2626;
-        }
-
-        .active-filter-badge {
-            display: inline-block;
-            padding: 4px 12px;
-            background: #667eea;
-            color: white;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 600;
-            margin-left: 8px;
-        }
-
-        tr.filtered-out {
-            display: none;
-        }
-
-        .no-results {
-            text-align: center;
-            padding: 40px;
-            color: #718096;
-            font-size: 14px;
-        }
-
-        .legend {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin: 20px 0;
-            padding: 16px;
-            background: #f7fafc;
-            border-radius: 8px;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 12px;
-        }
-
-        .legend-color {
-            width: 16px;
-            height: 16px;
-            border-radius: 4px;
-        }
-
-        .top-gaps {
-            margin-top: 20px;
-        }
-
-        .gap-item {
-            padding: 16px;
-            border-left: 4px solid #dc2626;
-            background: #fef2f2;
-            margin-bottom: 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .gap-item:hover {
-            transform: translateX(4px);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        .gap-item.active {
-            background: #fee2e2;
-            border-left-width: 6px;
-        }
-
-        .gap-item h4 {
-            font-size: 14px;
-            margin-bottom: 6px;
-            color: #991b1b;
-        }
-
-        .gap-item p {
-            font-size: 12px;
-            color: #6b7280;
-        }
-
+        
         @media print {
-            .tabs, .action-buttons {
+            .tabs, .action-buttons, .filter-section {
                 display: none;
             }
             .tab-content {
@@ -497,653 +446,976 @@
                 box-shadow: none;
             }
         }
+        
+        .chart-section {
+            background: white;
+            padding: 24px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+        }
+        
+        .chart-section h3 {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #2d3748;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .filter-section {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .filter-label {
+            font-weight: 600;
+            color: #2d3748;
+        }
+        
+        .filter-select {
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 13px;
+            background: white;
+            cursor: pointer;
+        }
+        
+        .clear-filter-btn {
+            padding: 8px 16px;
+            background: #718096;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        
+        .active-filter-badge {
+            padding: 6px 12px;
+            background: #667eea;
+            color: white;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .legend {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #718096;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🛡️ CIS Controls v8 Assessment Tracker</h1>
-            <p>Comprehensive assessment and compliance dashboard for CIS Controls implementation</p>
+            <div>
+                <h1>🛡️ Enterprise Compliance Tracker</h1>
+                <p>Multi-framework compliance management platform</p>
+            </div>
+            <button class="btn" id="addFrameworkBtn">➕ Add Framework</button>
         </div>
 
-        <div class="tabs">
-            <button class="tab active" onclick="switchTab('dashboard')">Dashboard</button>
-            <button class="tab" onclick="switchTab('assessment')">Assessment</button>
-            <button class="tab" onclick="switchTab('export')">Export</button>
+        <div id="frameworkListView" class="view active">
+            <h2 style="margin-bottom: 20px; color: #2d3748;">Your Frameworks</h2>
+            <div id="frameworkGrid" class="framework-grid"></div>
         </div>
 
-        <!-- Dashboard Tab -->
-        <div id="dashboard" class="tab-content active">
-            <div class="dashboard-grid">
-                <div class="metric-card" onclick="filterByStatus('all')" id="metricAll">
-                    <h3>Overall Compliance</h3>
-                    <div class="metric-value" id="overallScore">0%</div>
-                    <div class="metric-label">Weighted Score</div>
+        <div id="frameworkDetailView" class="view">
+            <div class="breadcrumb">
+                <a id="backToFrameworks">← Back to Frameworks</a>
+                <span>/</span>
+                <span id="currentFrameworkName"></span>
+            </div>
+
+            <div class="tabs" id="tabButtons">
+                <button class="tab active" data-tab="dashboard">Dashboard</button>
+                <button class="tab" data-tab="assessment">Assessment</button>
+                <button class="tab" data-tab="export">Export</button>
+            </div>
+
+            <div id="dashboard" class="tab-content active">
+                <div class="dashboard-grid">
+                    <div class="metric-card">
+                        <h3>Overall Compliance</h3>
+                        <div class="metric-value" id="overallScore">0%</div>
+                    </div>
+                    <div class="metric-card" style="border-left-color: #22c55e;">
+                        <h3>Implemented</h3>
+                        <div class="metric-value" id="implementedCount">0</div>
+                    </div>
+                    <div class="metric-card" style="border-left-color: #eab308;">
+                        <h3>Partial</h3>
+                        <div class="metric-value" id="partialCount">0</div>
+                    </div>
+                    <div class="metric-card" style="border-left-color: #dc2626;">
+                        <h3>Not Implemented</h3>
+                        <div class="metric-value" id="notImplementedCount">0</div>
+                    </div>
                 </div>
-                <div class="metric-card" style="border-left-color: #22c55e;" onclick="filterByStatus('implemented')" id="metricImplemented">
-                    <h3>Fully Implemented</h3>
-                    <div class="metric-value" id="fullyImplemented">0</div>
-                    <div class="metric-label">Safeguards (Click to filter)</div>
+
+                <div class="chart-section">
+                    <h3>Progress</h3>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressBar" style="width: 0%">0%</div>
+                    </div>
                 </div>
-                <div class="metric-card" style="border-left-color: #eab308;" onclick="filterByStatus('partial')" id="metricPartial">
-                    <h3>Partially Implemented</h3>
-                    <div class="metric-value" id="partiallyImplemented">0</div>
-                    <div class="metric-label">Safeguards (Click to filter)</div>
-                </div>
-                <div class="metric-card" style="border-left-color: #dc2626;" onclick="filterByStatus('not-implemented')" id="metricNotImplemented">
-                    <h3>Not Implemented</h3>
-                    <div class="metric-value" id="notImplemented">0</div>
-                    <div class="metric-label">Safeguards (Click to filter)</div>
+
+                <div class="chart-section">
+                    <h3>Summary by Category</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Category</th>
+                                    <th>Total</th>
+                                    <th>Assessed</th>
+                                    <th>Compliance</th>
+                                </tr>
+                            </thead>
+                            <tbody id="summaryTable"></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
-            <div class="chart-container">
-                <h3>Overall Progress</h3>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressBar" style="width: 0%">0%</div>
+            <div id="assessment" class="tab-content">
+                <div class="action-buttons">
+                    <button class="btn" id="saveProgressBtn">💾 Save Progress</button>
+                    <button class="btn btn-primary" id="addControlBtn">➕ Add Control</button>
+                    <button class="btn btn-secondary" id="importControlsBtn">📥 Import Controls</button>
+                    <button class="btn btn-secondary" id="loadSampleBtn">📋 Load Sample</button>
+                    <button class="btn btn-secondary" id="resetAssessmentBtn">🗑️ Clear All</button>
+                </div>
+
+                <div class="filter-section" id="filterSection">
+                    <span class="filter-label">🔍 Filters:</span>
+                    
+                    <select class="filter-select" id="filterStatus" onchange="applyFilters()">
+                        <option value="">All Statuses</option>
+                        <option value="implemented">✅ Fully Implemented</option>
+                        <option value="partial">⚠️ Partially Implemented</option>
+                        <option value="not-implemented">❌ Not Implemented</option>
+                        <option value="na">⊗ Not Applicable</option>
+                        <option value="unassessed">📝 Not Assessed</option>
+                    </select>
+
+                    <select class="filter-select" id="filterRisk" onchange="applyFilters()">
+                        <option value="">All Risk Levels</option>
+                        <option value="critical">🔴 Critical</option>
+                        <option value="high">🟠 High</option>
+                        <option value="medium">🟡 Medium</option>
+                        <option value="low">🟢 Low</option>
+                    </select>
+
+                    <select class="filter-select" id="filterCategory" onchange="applyFilters()">
+                        <option value="">All Categories</option>
+                    </select>
+
+                    <select class="filter-select" id="filterPriority" onchange="applyFilters()">
+                        <option value="">All Priorities</option>
+                        <option value="immediate">Immediate (0-7 days)</option>
+                        <option value="short">Short-term (1-30 days)</option>
+                        <option value="medium">Medium-term (1-3 months)</option>
+                        <option value="long">Long-term (3-12 months)</option>
+                    </select>
+
+                    <button class="clear-filter-btn" onclick="clearFilters()">Clear Filters</button>
+                    
+                    <span id="filterResultCount" class="active-filter-badge" style="display: none;"></span>
+                </div>
+
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #22c55e;"></div>
+                        <span>Fully Implemented (100%)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #eab308;"></div>
+                        <span>Partially Implemented (50%)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #dc2626;"></div>
+                        <span>Not Implemented (0%)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #9ca3af;"></div>
+                        <span>Not Applicable (N/A)</span>
+                    </div>
+                </div>
+
+                <div class="controls-table">
+                    <table id="assessmentTable">
+                        <thead>
+                            <tr>
+                                <th>Safeguard</th>
+                                <th>Title</th>
+                                <th>Category</th>
+                                <th>Implementation Status</th>
+                                <th>Evidence/Notes</th>
+                                <th>Risk Level</th>
+                                <th>Priority</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                    <div id="noResults" class="no-results" style="display: none;">
+                        <p><strong>No controls match the current filters.</strong></p>
+                        <p>Try adjusting your filter selections.</p>
+                    </div>
+                </div>
+
+                <div id="noAssessmentMsg" class="empty-state hidden">
+                    <div class="empty-state-icon">📊</div>
+                    <h3>No Controls Yet</h3>
+                    <p>Add controls to start your assessment</p>
+                    <button class="btn btn-primary" id="addControlBtn2">➕ Add Control</button>
                 </div>
             </div>
 
-            <div class="chart-container">
-                <h3>Compliance by CIS Control <span style="font-size: 12px; font-weight: 400; color: #718096;">(Click to filter)</span></h3>
-                <div class="bar-chart" id="controlChart"></div>
-            </div>
-
-            <div class="chart-container">
-                <h3>Risk Distribution <span style="font-size: 12px; font-weight: 400; color: #718096;">(Click to filter)</span></h3>
-                <div class="bar-chart" id="riskChart"></div>
-            </div>
-
-            <div class="chart-container">
-                <h3>Top 10 Critical Gaps <span style="font-size: 12px; font-weight: 400; color: #718096;">(Click to jump to safeguard)</span></h3>
-                <div class="top-gaps" id="topGaps"></div>
+            <div id="export" class="tab-content">
+                <h2 style="margin-bottom: 20px;">Export Options</h2>
+                <div class="action-buttons">
+                    <button class="btn btn-primary" id="exportCSVBtn">📊 Export CSV</button>
+                    <button class="btn btn-secondary" id="exportJSONBtn">📄 Export JSON</button>
+                    <button class="btn btn-secondary" id="printBtn">🖨️ Print Report</button>
+                </div>
+                <div class="chart-container">
+                    <h3>Export Instructions</h3>
+                    <p style="margin-bottom: 12px;">You can export your assessment data in the following formats:</p>
+                    <ul style="margin-left: 20px; line-height: 1.8;">
+                        <li><strong>CSV:</strong> Opens in Excel/Google Sheets for further analysis</li>
+                        <li><strong>JSON:</strong> For backup or importing into other systems</li>
+                        <li><strong>Print:</strong> Generate a PDF report using your browser's print dialog (Ctrl+P or Cmd+P, then "Save as PDF")</li>
+                    </ul>
+                </div>
             </div>
         </div>
+    </div>
 
-        <!-- Assessment Tab -->
-        <div id="assessment" class="tab-content">
-            <div class="action-buttons">
-                <button class="btn" onclick="saveData()">💾 Save Progress</button>
-                <button class="btn btn-secondary" onclick="loadSampleData()">📋 Load Sample Data</button>
-                <button class="btn btn-secondary" onclick="clearData()">🗑️ Clear All</button>
+    <div id="frameworkModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add Framework</h2>
+                <button class="close-btn" id="closeFrameworkModal">&times;</button>
             </div>
-
-            <div class="filter-section">
-                <span class="filter-label">🔍 Filters:</span>
-                
-                <select class="filter-select" id="filterStatus" onchange="applyFilters()">
-                    <option value="">All Statuses</option>
-                    <option value="implemented">✅ Fully Implemented</option>
-                    <option value="partial">⚠️ Partially Implemented</option>
-                    <option value="not-implemented">❌ Not Implemented</option>
-                    <option value="na">⊗ Not Applicable</option>
-                    <option value="unassessed">📝 Not Assessed</option>
-                </select>
-
-                <select class="filter-select" id="filterRisk" onchange="applyFilters()">
-                    <option value="">All Risk Levels</option>
-                    <option value="critical">🔴 Critical</option>
-                    <option value="high">🟠 High</option>
-                    <option value="medium">🟡 Medium</option>
-                    <option value="low">🟢 Low</option>
-                </select>
-
-                <select class="filter-select" id="filterControl" onchange="applyFilters()">
-                    <option value="">All Controls</option>
-                </select>
-
-                <select class="filter-select" id="filterPriority" onchange="applyFilters()">
-                    <option value="">All Priorities</option>
-                    <option value="immediate">Immediate (0-7 days)</option>
-                    <option value="short">Short-term (1-30 days)</option>
-                    <option value="medium">Medium-term (1-3 months)</option>
-                    <option value="long">Long-term (3-12 months)</option>
-                </select>
-
-                <button class="clear-filter-btn" onclick="clearFilters()">Clear Filters</button>
-                
-                <span id="filterResultCount" class="active-filter-badge" style="display: none;"></span>
+            <div class="form-group">
+                <label>Framework Name *</label>
+                <input type="text" id="frameworkName" placeholder="e.g., CIS Controls v8">
             </div>
-
-            <div class="legend">
-                <div class="legend-item">
-                    <div class="legend-color" style="background: #22c55e;"></div>
-                    <span>Fully Implemented (100%)</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background: #eab308;"></div>
-                    <span>Partially Implemented (50%)</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background: #dc2626;"></div>
-                    <span>Not Implemented (0%)</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background: #9ca3af;"></div>
-                    <span>Not Applicable (N/A)</span>
-                </div>
+            <div class="form-group">
+                <label>Description</label>
+                <textarea id="frameworkDesc" placeholder="Brief description"></textarea>
             </div>
-
-            <div class="controls-table">
-                <table id="assessmentTable">
-                    <thead>
-                        <tr>
-                            <th>Control</th>
-                            <th>Safeguard</th>
-                            <th>Title</th>
-                            <th>Category</th>
-                            <th>Implementation Status</th>
-                            <th>Evidence/Notes</th>
-                            <th>Risk Level</th>
-                            <th>Priority</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tableBody"></tbody>
-                </table>
-                <div id="noResults" class="no-results" style="display: none;">
-                    <p><strong>No safeguards match the current filters.</strong></p>
-                    <p>Try adjusting your filter selections.</p>
-                </div>
+            <div class="form-actions">
+                <button class="btn btn-secondary" id="cancelFrameworkModal">Cancel</button>
+                <button class="btn btn-primary" id="saveFrameworkBtn">Add Framework</button>
             </div>
         </div>
+    </div>
 
-        <!-- Export Tab -->
-        <div id="export" class="tab-content">
-            <h2 style="margin-bottom: 20px;">Export Assessment Data</h2>
-            <div class="action-buttons">
-                <button class="btn" onclick="exportToCSV()">📊 Export to CSV</button>
-                <button class="btn btn-secondary" onclick="exportToJSON()">📄 Export to JSON</button>
-                <button class="btn btn-secondary" onclick="window.print()">🖨️ Print Report</button>
+    <div id="controlModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="controlModalTitle">Add Control</h2>
+                <button class="close-btn" id="closeControlModal">&times;</button>
             </div>
-            <div class="chart-container">
-                <h3>Export Instructions</h3>
-                <p style="margin-bottom: 12px;">You can export your assessment data in the following formats:</p>
-                <ul style="margin-left: 20px; line-height: 1.8;">
-                    <li><strong>CSV:</strong> Opens in Excel/Google Sheets for further analysis</li>
-                    <li><strong>JSON:</strong> For backup or importing into other systems</li>
-                    <li><strong>Print:</strong> Generate a PDF report of the dashboard</li>
-                </ul>
+            <div class="form-group">
+                <label>Control ID *</label>
+                <input type="text" id="controlId" placeholder="e.g., 1.1">
+            </div>
+            <div class="form-group">
+                <label>Title *</label>
+                <input type="text" id="controlTitle" placeholder="Control title">
+            </div>
+            <div class="form-group">
+                <label>Category *</label>
+                <input type="text" id="controlCategory" placeholder="e.g., Asset Management">
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <textarea id="controlDescription" placeholder="Detailed description"></textarea>
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-secondary" id="cancelControlModal">Cancel</button>
+                <button class="btn btn-primary" id="saveControlBtn">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="importModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Import Controls</h2>
+                <button class="close-btn" id="closeImportModal">&times;</button>
+            </div>
+            <div class="form-group">
+                <label>Upload CSV or JSON</label>
+                <input type="file" id="importFile" accept=".csv,.json">
+            </div>
+            <p style="font-size: 12px; color: #718096; margin-bottom: 20px;">
+                <strong>CSV format:</strong><br>
+                Required columns: CIS Safeguard (or ID), Title, category<br>
+                Optional: Description, Implementation Status, Evidence/Notes, Risk Level, Priority
+            </p>
+            <div class="form-actions">
+                <button class="btn btn-secondary" id="cancelImportModal">Cancel</button>
+                <button class="btn btn-primary" id="processImportBtn">Import</button>
             </div>
         </div>
     </div>
 
     <script>
-        const cisControls = [
-            {id: 1, safeguard: '1.1', title: 'Establish and Maintain Detailed Enterprise Asset Inventory', category: 'Inventory and Control of Enterprise Assets'},
-            {id: 1, safeguard: '1.2', title: 'Address Unauthorized Assets', category: 'Inventory and Control of Enterprise Assets'},
-            {id: 2, safeguard: '2.1', title: 'Establish and Maintain a Software Inventory', category: 'Inventory and Control of Software Assets'},
-            {id: 2, safeguard: '2.2', title: 'Ensure Authorized Software is Currently Supported', category: 'Inventory and Control of Software Assets'},
-            {id: 3, safeguard: '3.1', title: 'Establish and Maintain a Data Management Process', category: 'Data Protection'},
-            {id: 3, safeguard: '3.3', title: 'Configure Data Access Control Lists', category: 'Data Protection'},
-            {id: 3, safeguard: '3.6', title: 'Encrypt Data on End-User Devices', category: 'Data Protection'},
-            {id: 4, safeguard: '4.1', title: 'Establish and Maintain a Secure Configuration Process', category: 'Secure Configuration'},
-            {id: 4, safeguard: '4.3', title: 'Configure Automatic Session Locking', category: 'Secure Configuration'},
-            {id: 5, safeguard: '5.1', title: 'Establish and Maintain an Inventory of Accounts', category: 'Account Management'},
-            {id: 5, safeguard: '5.2', title: 'Use Unique Passwords', category: 'Account Management'},
-            {id: 5, safeguard: '5.3', title: 'Disable Dormant Accounts', category: 'Account Management'},
-            {id: 6, safeguard: '6.1', title: 'Establish an Access Granting Process', category: 'Access Control'},
-            {id: 6, safeguard: '6.3', title: 'Require MFA for Externally-Exposed Applications', category: 'Access Control'},
-            {id: 6, safeguard: '6.5', title: 'Require MFA for Administrative Access', category: 'Access Control'},
-            {id: 7, safeguard: '7.1', title: 'Establish and Maintain a Vulnerability Management Process', category: 'Vulnerability Management'},
-            {id: 7, safeguard: '7.3', title: 'Perform Automated Operating System Patch Management', category: 'Vulnerability Management'},
-            {id: 8, safeguard: '8.1', title: 'Establish and Maintain an Audit Log Management Process', category: 'Audit Log Management'},
-            {id: 8, safeguard: '8.2', title: 'Collect Audit Logs', category: 'Audit Log Management'},
-            {id: 10, safeguard: '10.1', title: 'Deploy and Maintain Anti-Malware Software', category: 'Malware Defenses'},
-            {id: 11, safeguard: '11.2', title: 'Perform Automated Backups', category: 'Data Recovery'},
-            {id: 14, safeguard: '14.1', title: 'Establish and Maintain a Security Awareness Program', category: 'Security Awareness'},
-            {id: 17, safeguard: '17.1', title: 'Designate Personnel to Manage Incident Handling', category: 'Incident Response'}
-        ];
-
-        let assessmentData = {};
-        let activeFilters = {
-            status: '',
-            risk: '',
-            control: '',
-            priority: ''
-        };
-
-        function initializeTable() {
-            const tbody = document.getElementById('tableBody');
-            tbody.innerHTML = '';
+        let frameworks = [];
+        let currentFrameworkId = null;
+        let editingControlId = null;
+        
+        function getCurrentFramework() {
+            return frameworks.find(function(f) { return f.id === currentFrameworkId; });
+        }
+        
+        function printReport() {
+            try {
+                console.log('=== PRINT REPORT START ===');
+                console.log('printReport function called');
+                console.log('Checking getCurrentFramework...');
+                
+                var framework = getCurrentFramework();
+                console.log('Current framework:', framework);
+                console.log('currentFrameworkId:', currentFrameworkId);
+                
+                if (!framework) {
+                    console.error('No framework found! currentFrameworkId is:', currentFrameworkId);
+                    alert('⚠️ No Framework Open - Please open a framework first, then try exporting.');
+                    return;
+                }
+                
+                console.log('Getting framework stats...');
+                var stats = getFrameworkStats(framework);
+                console.log('Stats:', stats);
             
-            // Populate control filter dropdown
-            const controlFilter = document.getElementById('filterControl');
-            const uniqueControls = [...new Set(cisControls.map(c => c.id))];
-            uniqueControls.forEach(id => {
-                const option = document.createElement('option');
-                option.value = id;
-                option.textContent = `Control ${id}`;
-                controlFilter.appendChild(option);
+            var categories = {};
+            
+            for (var i = 0; i < framework.controls.length; i++) {
+                var ctrl = framework.controls[i];
+                var assess = framework.assessments[ctrl.id] || {};
+                
+                if (!categories[ctrl.category]) {
+                    categories[ctrl.category] = { total: 0, assessed: 0, score: 0 };
+                }
+                categories[ctrl.category].total++;
+                
+                if (assess.status) {
+                    categories[ctrl.category].assessed++;
+                    if (assess.status === 'implemented') {
+                        categories[ctrl.category].score += 1;
+                    } else if (assess.status === 'partial') {
+                        categories[ctrl.category].score += 0.5;
+                    }
+                }
+            }
+            
+            console.log('Building HTML report...');
+            var reportHTML = '<!DOCTYPE html>\n<html>\n<head>\n<meta charset="UTF-8">\n<title>' + framework.name + ' - Compliance Report</title>\n</head>\n<body style="font-family: Arial, sans-serif; padding: 40px; line-height: 1.6; max-width: 1200px; margin: 0 auto;">\n';
+            
+            reportHTML += '<h1 style="color: #667eea; border-bottom: 3px solid #667eea; padding-bottom: 10px;">' + framework.name + '</h1>\n';
+            reportHTML += '<div style="color: #718096; margin-bottom: 30px;">Generated: ' + new Date().toLocaleString() + '<br>' + (framework.description || '') + '</div>\n';
+            
+            reportHTML += '<h2 style="color: #2d3748; margin-top: 30px;">Executive Summary</h2>\n';
+            reportHTML += '<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin: 30px 0;">\n';
+            reportHTML += '<div style="border: 2px solid #e2e8f0; padding: 15px; border-radius: 8px; text-align: center;"><div style="font-size: 12px; color: #718096; text-transform: uppercase;">Overall Compliance</div><div style="font-size: 32px; font-weight: bold; color: #667eea; margin-top: 5px;">' + stats.compliance + '%</div></div>\n';
+            reportHTML += '<div style="border: 2px solid #e2e8f0; padding: 15px; border-radius: 8px; text-align: center;"><div style="font-size: 12px; color: #718096; text-transform: uppercase;">Total Controls</div><div style="font-size: 32px; font-weight: bold; color: #667eea; margin-top: 5px;">' + framework.controls.length + '</div></div>\n';
+            reportHTML += '<div style="border: 2px solid #e2e8f0; padding: 15px; border-radius: 8px; text-align: center;"><div style="font-size: 12px; color: #718096; text-transform: uppercase;">Assessed</div><div style="font-size: 32px; font-weight: bold; color: #667eea; margin-top: 5px;">' + stats.assessed + '</div></div>\n';
+            reportHTML += '<div style="border: 2px solid #e2e8f0; padding: 15px; border-radius: 8px; text-align: center;"><div style="font-size: 12px; color: #718096; text-transform: uppercase;">Remaining</div><div style="font-size: 32px; font-weight: bold; color: #667eea; margin-top: 5px;">' + (framework.controls.length - stats.assessed) + '</div></div>\n';
+            reportHTML += '</div>\n';
+            
+            reportHTML += '<h2 style="color: #2d3748; margin-top: 30px;">Summary by Category</h2>\n';
+            reportHTML += '<table style="width: 100%; border-collapse: collapse; margin: 20px 0;"><thead><tr>';
+            reportHTML += '<th style="background: #f7fafc; padding: 12px; text-align: left; border-bottom: 2px solid #e2e8f0;">Category</th>';
+            reportHTML += '<th style="background: #f7fafc; padding: 12px; text-align: left; border-bottom: 2px solid #e2e8f0;">Total Controls</th>';
+            reportHTML += '<th style="background: #f7fafc; padding: 12px; text-align: left; border-bottom: 2px solid #e2e8f0;">Assessed</th>';
+            reportHTML += '<th style="background: #f7fafc; padding: 12px; text-align: left; border-bottom: 2px solid #e2e8f0;">Compliance</th>';
+            reportHTML += '</tr></thead><tbody>\n';
+            
+            for (var cat in categories) {
+                var c = categories[cat];
+                var compliance = c.total > 0 ? Math.round((c.score / c.total) * 100) : 0;
+                reportHTML += '<tr><td style="padding: 10px; border-bottom: 1px solid #f0f0f0;">' + cat + '</td>';
+                reportHTML += '<td style="padding: 10px; border-bottom: 1px solid #f0f0f0;">' + c.total + '</td>';
+                reportHTML += '<td style="padding: 10px; border-bottom: 1px solid #f0f0f0;">' + c.assessed + '</td>';
+                reportHTML += '<td style="padding: 10px; border-bottom: 1px solid #f0f0f0;"><strong>' + compliance + '%</strong></td></tr>\n';
+            }
+            
+            reportHTML += '</tbody></table>\n';
+            reportHTML += '<h2 style="color: #2d3748; margin-top: 30px;">Detailed Assessment</h2>\n';
+            reportHTML += '<table style="width: 100%; border-collapse: collapse; margin: 20px 0;"><thead><tr>';
+            reportHTML += '<th style="background: #f7fafc; padding: 12px; text-align: left; border-bottom: 2px solid #e2e8f0;">ID</th>';
+            reportHTML += '<th style="background: #f7fafc; padding: 12px; text-align: left; border-bottom: 2px solid #e2e8f0;">Title</th>';
+            reportHTML += '<th style="background: #f7fafc; padding: 12px; text-align: left; border-bottom: 2px solid #e2e8f0;">Category</th>';
+            reportHTML += '<th style="background: #f7fafc; padding: 12px; text-align: left; border-bottom: 2px solid #e2e8f0;">Status</th>';
+            reportHTML += '<th style="background: #f7fafc; padding: 12px; text-align: left; border-bottom: 2px solid #e2e8f0;">Risk</th>';
+            reportHTML += '<th style="background: #f7fafc; padding: 12px; text-align: left; border-bottom: 2px solid #e2e8f0;">Notes</th>';
+            reportHTML += '</tr></thead><tbody>\n';
+            
+            for (var i = 0; i < framework.controls.length; i++) {
+                var ctrl = framework.controls[i];
+                var assess = framework.assessments[ctrl.id] || {};
+                var statusStyle = '';
+                var statusText = 'Not Assessed';
+                
+                if (assess.status === 'implemented') {
+                    statusStyle = 'color: #22c55e; font-weight: bold;';
+                    statusText = '✓ Implemented';
+                } else if (assess.status === 'partial') {
+                    statusStyle = 'color: #eab308; font-weight: bold;';
+                    statusText = '⚠ Partial';
+                } else if (assess.status === 'not-implemented') {
+                    statusStyle = 'color: #dc2626; font-weight: bold;';
+                    statusText = '✗ Not Implemented';
+                } else if (assess.status === 'na') {
+                    statusText = 'N/A';
+                }
+                
+                var riskStyle = '';
+                var riskText = assess.risk || '-';
+                if (assess.risk === 'critical') riskStyle = 'color: #dc2626;';
+                else if (assess.risk === 'high') riskStyle = 'color: #f59e0b;';
+                else if (assess.risk === 'medium') riskStyle = 'color: #eab308;';
+                else if (assess.risk === 'low') riskStyle = 'color: #22c55e;';
+                
+                reportHTML += '<tr><td style="padding: 10px; border-bottom: 1px solid #f0f0f0;"><strong>' + ctrl.id + '</strong></td>';
+                reportHTML += '<td style="padding: 10px; border-bottom: 1px solid #f0f0f0;">' + ctrl.title + '</td>';
+                reportHTML += '<td style="padding: 10px; border-bottom: 1px solid #f0f0f0;">' + ctrl.category + '</td>';
+                reportHTML += '<td style="padding: 10px; border-bottom: 1px solid #f0f0f0; ' + statusStyle + '">' + statusText + '</td>';
+                reportHTML += '<td style="padding: 10px; border-bottom: 1px solid #f0f0f0; ' + riskStyle + '">' + riskText + '</td>';
+                reportHTML += '<td style="padding: 10px; border-bottom: 1px solid #f0f0f0;">' + (assess.notes || '-') + '</td></tr>\n';
+            }
+            
+            reportHTML += '</tbody></table>\n</body>\n</html>';
+            
+            console.log('Calling showDownloadModal...');
+            showDownloadModal('Print Report - Save as HTML', reportHTML, framework.name.replace(/[^a-z0-9]/gi, '_') + '_report_' + new Date().toISOString().split('T')[0] + '.html', 'text/html');
+            console.log('printReport function completed');
+            
+            } catch (error) {
+                console.error('CRITICAL ERROR in printReport:', error);
+                console.error('Error message:', error.message);
+                console.error('Error stack:', error.stack);
+                alert('Error in printReport: ' + error.message);
+            }
+        }
+
+        function init() {
+            loadFromStorage();
+            renderFrameworkList();
+            setupEventListeners();
+        }
+
+        function setupEventListeners() {
+            // Framework buttons
+            var addFrameworkBtn = document.getElementById('addFrameworkBtn');
+            if (addFrameworkBtn) addFrameworkBtn.addEventListener('click', openFrameworkModal);
+            
+            var backToFrameworks = document.getElementById('backToFrameworks');
+            if (backToFrameworks) backToFrameworks.addEventListener('click', showFrameworkList);
+            
+            // Tab buttons
+            var tabButtons = document.querySelectorAll('#tabButtons .tab');
+            tabButtons.forEach(function(tab) {
+                tab.addEventListener('click', function() { switchTab(this.dataset.tab); });
             });
             
-            cisControls.forEach((control, index) => {
-                const row = tbody.insertRow();
+            // Control buttons
+            var addControlBtn = document.getElementById('addControlBtn');
+            if (addControlBtn) addControlBtn.addEventListener('click', function() { openControlModal(); });
+            
+            var addControlBtn2 = document.getElementById('addControlBtn2');
+            if (addControlBtn2) addControlBtn2.addEventListener('click', function() { openControlModal(); });
+            
+            var importControlsBtn = document.getElementById('importControlsBtn');
+            if (importControlsBtn) importControlsBtn.addEventListener('click', openImportModal);
+            
+            var loadSampleBtn = document.getElementById('loadSampleBtn');
+            if (loadSampleBtn) loadSampleBtn.addEventListener('click', loadSampleData);
+            
+            var saveProgressBtn = document.getElementById('saveProgressBtn');
+            if (saveProgressBtn) saveProgressBtn.addEventListener('click', saveAssessment);
+            
+            var resetAssessmentBtn = document.getElementById('resetAssessmentBtn');
+            if (resetAssessmentBtn) resetAssessmentBtn.addEventListener('click', resetAssessment);
+            
+            // Export buttons
+            var exportCSVBtn = document.getElementById('exportCSVBtn');
+            if (exportCSVBtn) exportCSVBtn.addEventListener('click', exportToCSV);
+            
+            var exportJSONBtn = document.getElementById('exportJSONBtn');
+            if (exportJSONBtn) exportJSONBtn.addEventListener('click', exportToJSON);
+            
+            var printBtn = document.getElementById('printBtn');
+            if (printBtn) {
+                printBtn.addEventListener('click', function() {
+                    console.log('Print button clicked');
+                    console.log('printReport function exists?', typeof printReport);
+                    console.log('printReport toString:', printReport.toString().substring(0, 200));
+                    console.log('getCurrentFramework function exists?', typeof getCurrentFramework);
+                    console.log('About to call printReport()...');
+                    try {
+                        var result = printReport();
+                        console.log('printReport() returned:', result);
+                    } catch (error) {
+                        console.error('Error in printReport:', error);
+                        console.error('Error stack:', error.stack);
+                        alert('Error generating report: ' + error.message);
+                    }
+                    console.log('After printReport() call');
+                });
+            } else {
+                console.error('Print button not found!');
+            }
+            
+            // Modal close buttons
+            var closeFrameworkModal = document.getElementById('closeFrameworkModal');
+            if (closeFrameworkModal) closeFrameworkModal.addEventListener('click', closeFrameworkModalHandler);
+            
+            var cancelFrameworkModal = document.getElementById('cancelFrameworkModal');
+            if (cancelFrameworkModal) cancelFrameworkModal.addEventListener('click', closeFrameworkModalHandler);
+            
+            var saveFrameworkBtn = document.getElementById('saveFrameworkBtn');
+            if (saveFrameworkBtn) saveFrameworkBtn.addEventListener('click', saveFramework);
+            
+            var closeControlModal = document.getElementById('closeControlModal');
+            if (closeControlModal) closeControlModal.addEventListener('click', closeControlModalHandler);
+            
+            var cancelControlModal = document.getElementById('cancelControlModal');
+            if (cancelControlModal) cancelControlModal.addEventListener('click', closeControlModalHandler);
+            
+            var saveControlBtn = document.getElementById('saveControlBtn');
+            if (saveControlBtn) saveControlBtn.addEventListener('click', saveControl);
+            
+            var closeImportModal = document.getElementById('closeImportModal');
+            if (closeImportModal) closeImportModal.addEventListener('click', closeImportModalHandler);
+            
+            var cancelImportModal = document.getElementById('cancelImportModal');
+            if (cancelImportModal) cancelImportModal.addEventListener('click', closeImportModalHandler);
+            
+            var processImportBtn = document.getElementById('processImportBtn');
+            if (processImportBtn) processImportBtn.addEventListener('click', processImport);
+            
+            window.addEventListener('click', function(e) {
+                if (e.target.classList.contains('modal')) {
+                    e.target.classList.remove('show');
+                }
+            });
+        }
+
+        function loadFromStorage() {
+            var saved = localStorage.getItem('complianceFrameworks');
+            if (saved) {
+                frameworks = JSON.parse(saved);
+            }
+        }
+
+        function saveToStorage() {
+            localStorage.setItem('complianceFrameworks', JSON.stringify(frameworks));
+        }
+
+        function openFrameworkModal() {
+            document.getElementById('frameworkName').value = '';
+            document.getElementById('frameworkDesc').value = '';
+            document.getElementById('frameworkModal').classList.add('show');
+        }
+
+        function closeFrameworkModal() {
+            document.getElementById('frameworkModal').classList.remove('show');
+        }
+        
+        function closeFrameworkModalHandler() {
+            closeFrameworkModal();
+        }
+
+        function saveFramework() {
+            var name = document.getElementById('frameworkName').value.trim();
+            var desc = document.getElementById('frameworkDesc').value.trim();
+            
+            if (!name) {
+                alert('Please enter a framework name');
+                return;
+            }
+            
+            var framework = {
+                id: Date.now().toString(),
+                name: name,
+                description: desc,
+                controls: [],
+                assessments: {}
+            };
+            
+            frameworks.push(framework);
+            saveToStorage();
+            renderFrameworkList();
+            closeFrameworkModal();
+        }
+
+        function renderFrameworkList() {
+            var grid = document.getElementById('frameworkGrid');
+            
+            if (frameworks.length === 0) {
+                grid.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🏢</div><h3>No Frameworks Yet</h3><p>Get started by adding your first compliance framework</p><button class="btn btn-primary" onclick="openFrameworkModal()">➕ Add Framework</button></div>';
+                return;
+            }
+            
+            grid.innerHTML = '';
+            for (var i = 0; i < frameworks.length; i++) {
+                var fw = frameworks[i];
+                var stats = getFrameworkStats(fw);
+                
+                var card = document.createElement('div');
+                card.className = 'framework-card';
+                card.style.cursor = 'default';
+                
+                card.innerHTML = '<h3>' + fw.name + '</h3><p>' + (fw.description || 'No description') + '</p><div class="framework-stats"><div class="stat"><div class="stat-label">Controls</div><div class="stat-value">' + fw.controls.length + '</div></div><div class="stat"><div class="stat-label">Compliance</div><div class="stat-value">' + stats.compliance + '%</div></div></div><div class="card-actions"></div>';
+                
+                var openBtn = document.createElement('button');
+                openBtn.className = 'btn btn-small btn-primary';
+                openBtn.textContent = '📂 Open';
+                openBtn.onclick = (function(id) {
+                    return function(e) {
+                        e.stopPropagation();
+                        openFramework(id);
+                    };
+                })(fw.id);
+                
+                var deleteBtn = document.createElement('button');
+                deleteBtn.className = 'btn btn-small btn-danger';
+                deleteBtn.textContent = '🗑️ Delete';
+                deleteBtn.style.marginLeft = 'auto';
+                deleteBtn.setAttribute('data-framework-id', fw.id);
+                deleteBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    var fwId = this.getAttribute('data-framework-id');
+                    deleteFramework(fwId);
+                });
+                
+                var actions = card.querySelector('.card-actions');
+                actions.appendChild(openBtn);
+                actions.appendChild(deleteBtn);
+                grid.appendChild(card);
+            }
+        }
+
+        function getFrameworkStats(framework) {
+            var total = 0;
+            var assessed = 0;
+            
+            for (var i = 0; i < framework.controls.length; i++) {
+                var ctrl = framework.controls[i];
+                var assess = framework.assessments[ctrl.id];
+                if (assess && assess.status) {
+                    assessed++;
+                    if (assess.status === 'implemented') total += 1;
+                    else if (assess.status === 'partial') total += 0.5;
+                }
+            }
+            
+            var compliance = framework.controls.length > 0 ? Math.round((total / framework.controls.length) * 100) : 0;
+            
+            return { compliance: compliance, assessed: assessed };
+        }
+
+        function deleteFramework(id) {
+            var framework = frameworks.find(function(f) { return f.id === id; });
+            if (confirm('Delete "' + framework.name + '"? This will permanently delete all controls and assessment data.')) {
+                frameworks = frameworks.filter(function(f) { return f.id !== id; });
+                saveToStorage();
+                renderFrameworkList();
+            }
+        }
+
+        function openFramework(id) {
+            currentFrameworkId = id;
+            var framework = getCurrentFramework();
+            
+            document.getElementById('currentFrameworkName').textContent = framework.name;
+            document.getElementById('frameworkListView').classList.remove('active');
+            document.getElementById('frameworkDetailView').classList.add('active');
+            
+            renderAssessment();
+            updateDashboard();
+        }
+
+        function showFrameworkList() {
+            currentFrameworkId = null;
+            document.getElementById('frameworkListView').classList.add('active');
+            document.getElementById('frameworkDetailView').classList.remove('active');
+        }
+
+        function openControlModal(controlId) {
+            editingControlId = controlId || null;
+            
+            if (controlId) {
+                var framework = getCurrentFramework();
+                var control = framework.controls.find(function(c) { return c.id === controlId; });
+                document.getElementById('controlModalTitle').textContent = 'Edit Control';
+                document.getElementById('controlId').value = control.id;
+                document.getElementById('controlTitle').value = control.title;
+                document.getElementById('controlCategory').value = control.category;
+                document.getElementById('controlDescription').value = control.description || '';
+            } else {
+                document.getElementById('controlModalTitle').textContent = 'Add Control';
+                document.getElementById('controlId').value = '';
+                document.getElementById('controlTitle').value = '';
+                document.getElementById('controlCategory').value = '';
+                document.getElementById('controlDescription').value = '';
+            }
+            
+            document.getElementById('controlModal').classList.add('show');
+        }
+
+        function closeControlModal() {
+            document.getElementById('controlModal').classList.remove('show');
+            editingControlId = null;
+        }
+        
+        function closeControlModalHandler() {
+            closeControlModal();
+        }
+
+        function saveControl() {
+            var id = document.getElementById('controlId').value.trim();
+            var title = document.getElementById('controlTitle').value.trim();
+            var category = document.getElementById('controlCategory').value.trim();
+            var description = document.getElementById('controlDescription').value.trim();
+            
+            if (!id || !title || !category) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            var framework = getCurrentFramework();
+            
+            if (editingControlId) {
+                var control = framework.controls.find(function(c) { return c.id === editingControlId; });
+                if (control) {
+                    control.id = id;
+                    control.title = title;
+                    control.category = category;
+                    control.description = description;
+                }
+            } else {
+                if (framework.controls.some(function(c) { return c.id === id; })) {
+                    alert('A control with this ID already exists');
+                    return;
+                }
+                framework.controls.push({ id: id, title: title, category: category, description: description });
+            }
+            
+            saveToStorage();
+            renderAssessment();
+            updateDashboard();
+            closeControlModal();
+        }
+
+        function renderAssessment() {
+            var framework = getCurrentFramework();
+            var tbody = document.getElementById('tableBody');
+            var table = document.getElementById('assessmentTable');
+            var emptyMsg = document.getElementById('noAssessmentMsg');
+            var filterSection = document.getElementById('filterSection');
+            
+            if (framework.controls.length === 0) {
+                table.style.display = 'none';
+                emptyMsg.classList.remove('hidden');
+                if (filterSection) filterSection.style.display = 'none';
+                document.querySelector('.legend').style.display = 'none';
+                return;
+            }
+            
+            table.style.display = 'table';
+            emptyMsg.classList.add('hidden');
+            if (filterSection) filterSection.style.display = 'flex';
+            document.querySelector('.legend').style.display = 'flex';
+            
+            var categoryFilter = document.getElementById('filterCategory');
+            var uniqueCategories = [];
+            for (var i = 0; i < framework.controls.length; i++) {
+                if (uniqueCategories.indexOf(framework.controls[i].category) === -1) {
+                    uniqueCategories.push(framework.controls[i].category);
+                }
+            }
+            categoryFilter.innerHTML = '<option value="">All Categories</option>';
+            uniqueCategories.forEach(function(cat) {
+                var option = document.createElement('option');
+                option.value = cat;
+                option.textContent = cat;
+                categoryFilter.appendChild(option);
+            });
+            
+            tbody.innerHTML = '';
+            
+            framework.controls.forEach(function(control, index) {
+                var assess = framework.assessments[control.id] || {};
+                
+                var row = tbody.insertRow();
                 row.innerHTML = `
-                    <td>${control.id}</td>
-                    <td><strong>${control.safeguard}</strong></td>
+                    <td><strong>${control.id}</strong></td>
                     <td>${control.title}</td>
                     <td style="font-size: 11px; color: #718096;">${control.category}</td>
                     <td>
-                        <select onchange="updateStatus(${index}, this.value)">
+                        <select onchange="updateAssessmentStatus(${index}, this.value)">
                             <option value="">-- Select --</option>
-                            <option value="implemented">✅ Fully Implemented</option>
-                            <option value="partial">⚠️ Partially Implemented</option>
-                            <option value="not-implemented">❌ Not Implemented</option>
-                            <option value="na">⊗ Not Applicable</option>
+                            <option value="implemented"${assess.status === 'implemented' ? ' selected' : ''}>✅ Fully Implemented</option>
+                            <option value="partial"${assess.status === 'partial' ? ' selected' : ''}>⚠️ Partially Implemented</option>
+                            <option value="not-implemented"${assess.status === 'not-implemented' ? ' selected' : ''}>❌ Not Implemented</option>
+                            <option value="na"${assess.status === 'na' ? ' selected' : ''}>⊗ Not Applicable</option>
                         </select>
                     </td>
                     <td>
-                        <textarea placeholder="Enter evidence and notes..." onchange="updateNotes(${index}, this.value)"></textarea>
+                        <textarea placeholder="Enter evidence and notes..." onchange="updateAssessmentNotes(${index}, this.value)">${assess.notes || ''}</textarea>
                     </td>
                     <td>
-                        <select onchange="updateRisk(${index}, this.value)">
+                        <select onchange="updateAssessmentRisk(${index}, this.value)">
                             <option value="">-- Select --</option>
-                            <option value="critical">🔴 Critical</option>
-                            <option value="high">🟠 High</option>
-                            <option value="medium">🟡 Medium</option>
-                            <option value="low">🟢 Low</option>
-                            <option value="na">N/A</option>
+                            <option value="critical"${assess.risk === 'critical' ? ' selected' : ''}>🔴 Critical</option>
+                            <option value="high"${assess.risk === 'high' ? ' selected' : ''}>🟠 High</option>
+                            <option value="medium"${assess.risk === 'medium' ? ' selected' : ''}>🟡 Medium</option>
+                            <option value="low"${assess.risk === 'low' ? ' selected' : ''}>🟢 Low</option>
+                            <option value="na"${assess.risk === 'na' ? ' selected' : ''}>N/A</option>
                         </select>
                     </td>
                     <td>
-                        <select onchange="updatePriority(${index}, this.value)">
+                        <select onchange="updateAssessmentPriority(${index}, this.value)">
                             <option value="">-- Select --</option>
-                            <option value="immediate">Immediate (0-7 days)</option>
-                            <option value="short">Short-term (1-30 days)</option>
-                            <option value="medium">Medium-term (1-3 months)</option>
-                            <option value="long">Long-term (3-12 months)</option>
+                            <option value="immediate"${assess.priority === 'immediate' ? ' selected' : ''}>Immediate (0-7 days)</option>
+                            <option value="short"${assess.priority === 'short' ? ' selected' : ''}>Short-term (1-30 days)</option>
+                            <option value="medium"${assess.priority === 'medium' ? ' selected' : ''}>Medium-term (1-3 months)</option>
+                            <option value="long"${assess.priority === 'long' ? ' selected' : ''}>Long-term (3-12 months)</option>
                         </select>
                     </td>
                 `;
-                
-                assessmentData[index] = {
-                    control: control,
-                    status: '',
-                    notes: '',
-                    risk: '',
-                    priority: ''
-                };
             });
         }
-
-        function updateStatus(index, status) {
-            assessmentData[index].status = status;
+        
+        function updateAssessmentStatus(index, status) {
+            var framework = getCurrentFramework();
+            var control = framework.controls[index];
+            if (!framework.assessments[control.id]) {
+                framework.assessments[control.id] = {};
+            }
+            framework.assessments[control.id].status = status;
+            saveToStorage();
             updateDashboard();
-            saveData();
         }
-
-        function updateNotes(index, notes) {
-            assessmentData[index].notes = notes;
-            saveData();
+        
+        function updateAssessmentNotes(index, notes) {
+            var framework = getCurrentFramework();
+            var control = framework.controls[index];
+            if (!framework.assessments[control.id]) {
+                framework.assessments[control.id] = {};
+            }
+            framework.assessments[control.id].notes = notes;
+            saveToStorage();
         }
-
-        function updateRisk(index, risk) {
-            assessmentData[index].risk = risk;
+        
+        function updateAssessmentRisk(index, risk) {
+            var framework = getCurrentFramework();
+            var control = framework.controls[index];
+            if (!framework.assessments[control.id]) {
+                framework.assessments[control.id] = {};
+            }
+            framework.assessments[control.id].risk = risk;
+            saveToStorage();
             updateDashboard();
-            saveData();
         }
-
-        function updatePriority(index, priority) {
-            assessmentData[index].priority = priority;
-            saveData();
-        }
-
-        function updateDashboard() {
-            let implemented = 0;
-            let partial = 0;
-            let notImplemented = 0;
-            let na = 0;
-            let total = 0;
-
-            const riskCounts = {critical: 0, high: 0, medium: 0, low: 0};
-            const controlCounts = {};
-
-            Object.values(assessmentData).forEach(item => {
-                if (item.status === 'implemented') {
-                    implemented++;
-                    total += 1;
-                } else if (item.status === 'partial') {
-                    partial++;
-                    total += 0.5;
-                } else if (item.status === 'not-implemented') {
-                    notImplemented++;
-                } else if (item.status === 'na') {
-                    na++;
-                }
-
-                if (item.risk && item.risk !== 'na') {
-                    riskCounts[item.risk]++;
-                }
-
-                const controlId = item.control.id;
-                if (!controlCounts[controlId]) {
-                    controlCounts[controlId] = {name: item.control.category, implemented: 0, total: 0, naCount: 0};
-                }
-                
-                if (item.status === 'na') {
-                    controlCounts[controlId].naCount++;
-                } else if (item.status !== '') {
-                    controlCounts[controlId].total++;
-                    if (item.status === 'implemented') {
-                        controlCounts[controlId].implemented += 1;
-                    } else if (item.status === 'partial') {
-                        controlCounts[controlId].implemented += 0.5;
-                    }
-                }
-            });
-
-            const applicable = Object.keys(assessmentData).length - na;
-            const score = applicable > 0 ? (total / applicable * 100).toFixed(1) : 0;
-
-            document.getElementById('overallScore').textContent = score + '%';
-            document.getElementById('fullyImplemented').textContent = implemented;
-            document.getElementById('partiallyImplemented').textContent = partial;
-            document.getElementById('notImplemented').textContent = notImplemented;
-            document.getElementById('progressBar').style.width = score + '%';
-            document.getElementById('progressBar').textContent = score + '%';
-
-            updateControlChart(controlCounts);
-            updateRiskChart(riskCounts);
-            updateTopGaps();
-        }
-
-        function updateControlChart(controlCounts) {
-            const container = document.getElementById('controlChart');
-            container.innerHTML = '';
-
-            Object.entries(controlCounts).forEach(([id, data]) => {
-                const item = document.createElement('div');
-                item.className = 'bar-item';
-                item.setAttribute('data-control-id', id);
-                item.onclick = function() {
-                    filterByControl(id);
-                };
-                
-                // Check if all safeguards are N/A
-                const totalSafeguards = data.total + data.naCount;
-                if (data.naCount === totalSafeguards && totalSafeguards > 0) {
-                    // All are N/A - show grey bar
-                    item.innerHTML = `
-                        <div class="bar-label">Control ${id}</div>
-                        <div class="bar-bg">
-                            <div class="bar-fill" style="width: 100%; background: #9ca3af;">
-                                N/A
-                            </div>
-                        </div>
-                    `;
-                } else if (data.total === 0) {
-                    // Not assessed yet - show empty bar
-                    item.innerHTML = `
-                        <div class="bar-label">Control ${id}</div>
-                        <div class="bar-bg">
-                            <div class="bar-fill" style="width: 0%; background: #e2e8f0;">
-                                Not assessed
-                            </div>
-                        </div>
-                    `;
-                } else {
-                    // Calculate percentage based only on applicable safeguards
-                    const percentage = (data.implemented / data.total * 100).toFixed(1);
-                    const color = percentage >= 80 ? '#22c55e' : percentage >= 50 ? '#eab308' : '#dc2626';
-                    
-                    item.innerHTML = `
-                        <div class="bar-label">Control ${id}</div>
-                        <div class="bar-bg">
-                            <div class="bar-fill" style="width: ${percentage}%; background: ${color};">
-                                ${percentage}%
-                            </div>
-                        </div>
-                    `;
-                }
-                
-                container.appendChild(item);
-            });
-        }
-
-        function updateRiskChart(riskCounts) {
-            const container = document.getElementById('riskChart');
-            container.innerHTML = '';
-
-            const risks = [
-                {label: 'Critical', count: riskCounts.critical, color: '#dc2626', value: 'critical'},
-                {label: 'High', count: riskCounts.high, color: '#f97316', value: 'high'},
-                {label: 'Medium', count: riskCounts.medium, color: '#eab308', value: 'medium'},
-                {label: 'Low', count: riskCounts.low, color: '#22c55e', value: 'low'}
-            ];
-
-            const maxCount = Math.max(...Object.values(riskCounts), 1);
-
-            risks.forEach(risk => {
-                const percentage = (risk.count / maxCount * 100);
-                const item = document.createElement('div');
-                item.className = 'bar-item';
-                item.setAttribute('data-risk-level', risk.value);
-                item.onclick = function() {
-                    filterByRisk(risk.value);
-                };
-                item.innerHTML = `
-                    <div class="bar-label">${risk.label}</div>
-                    <div class="bar-bg">
-                        <div class="bar-fill" style="width: ${percentage}%; background: ${risk.color};">
-                            ${risk.count}
-                        </div>
-                    </div>
-                `;
-                container.appendChild(item);
-            });
-        }
-
-        function updateTopGaps() {
-            const container = document.getElementById('topGaps');
-            container.innerHTML = '';
-
-            const gaps = Object.entries(assessmentData)
-                .filter(([index, item]) => item.status === 'not-implemented' && (item.risk === 'critical' || item.risk === 'high'))
-                .sort(([, a], [, b]) => {
-                    const riskOrder = {critical: 0, high: 1};
-                    return riskOrder[a.risk] - riskOrder[b.risk];
-                })
-                .slice(0, 10);
-
-            if (gaps.length === 0) {
-                container.innerHTML = '<p style="color: #22c55e; font-weight: 600;">🎉 No critical or high-risk gaps found!</p>';
-                return;
+        
+        function updateAssessmentPriority(index, priority) {
+            var framework = getCurrentFramework();
+            var control = framework.controls[index];
+            if (!framework.assessments[control.id]) {
+                framework.assessments[control.id] = {};
             }
-
-            gaps.forEach(([index, gap]) => {
-                const item = document.createElement('div');
-                item.className = 'gap-item';
-                item.style.borderLeftColor = gap.risk === 'critical' ? '#dc2626' : '#f97316';
-                item.style.background = gap.risk === 'critical' ? '#fef2f2' : '#fff7ed';
-                item.setAttribute('data-gap-index', index);
-                item.onclick = function() {
-                    scrollToSafeguard(index);
-                };
-                item.innerHTML = `
-                    <h4>${gap.control.safeguard} - ${gap.control.title}</h4>
-                    <p><strong>Risk:</strong> ${gap.risk === 'critical' ? '🔴 Critical' : '🟠 High'} | 
-                    <strong>Category:</strong> ${gap.control.category}</p>
-                    ${gap.notes ? `<p style="margin-top: 8px; font-style: italic;">${gap.notes}</p>` : ''}
-                `;
-                container.appendChild(item);
-            });
+            framework.assessments[control.id].priority = priority;
+            saveToStorage();
         }
 
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            
-            event.target.classList.add('active');
-            document.getElementById(tabName).classList.add('active');
+        function saveAssessment() {
+            saveToStorage();
+            alert('Assessment saved successfully!');
+        }
 
-            // If switching to assessment tab and there's an active filter from dashboard, apply it
-            if (tabName === 'assessment' && activeFilters.status) {
-                applyFilters();
+        function resetAssessment() {
+            if (confirm('This will clear all assessment data. Are you sure?')) {
+                var framework = getCurrentFramework();
+                framework.assessments = {};
+                saveToStorage();
+                renderAssessment();
+                updateDashboard();
+                alert('Assessment data cleared!');
             }
         }
-
-        function filterByStatus(status) {
-            // Switch to assessment tab
-            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            
-            document.querySelector('.tab:nth-child(2)').classList.add('active');
-            document.getElementById('assessment').classList.add('active');
-
-            // Remove active state from all metric cards and chart items
-            document.querySelectorAll('.metric-card').forEach(card => card.classList.remove('active'));
-            clearChartHighlights();
-
-            // Apply filter
-            if (status === 'all') {
-                clearFilters();
-            } else {
-                document.getElementById('filterStatus').value = status;
-                activeFilters.status = status;
-                
-                // Highlight the clicked metric card
-                const metricMap = {
-                    'implemented': 'metricImplemented',
-                    'partial': 'metricPartial',
-                    'not-implemented': 'metricNotImplemented'
-                };
-                if (metricMap[status]) {
-                    document.getElementById(metricMap[status]).classList.add('active');
-                }
-                
-                applyFilters();
-            }
-        }
-
-        function filterByControl(controlId) {
-            // Switch to assessment tab
-            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            
-            document.querySelector('.tab:nth-child(2)').classList.add('active');
-            document.getElementById('assessment').classList.add('active');
-
-            // Clear other highlights
-            document.querySelectorAll('.metric-card').forEach(card => card.classList.remove('active'));
-            clearChartHighlights();
-
-            // Highlight clicked bar
-            const controlBars = document.querySelectorAll('[data-control-id]');
-            controlBars.forEach(bar => {
-                if (bar.getAttribute('data-control-id') === controlId.toString()) {
-                    bar.classList.add('active');
-                }
-            });
-
-            // Apply filter
-            document.getElementById('filterControl').value = controlId;
-            activeFilters.control = controlId.toString();
-            applyFilters();
-        }
-
-        function filterByRisk(riskLevel) {
-            // Switch to assessment tab
-            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            
-            document.querySelector('.tab:nth-child(2)').classList.add('active');
-            document.getElementById('assessment').classList.add('active');
-
-            // Clear other highlights
-            document.querySelectorAll('.metric-card').forEach(card => card.classList.remove('active'));
-            clearChartHighlights();
-
-            // Highlight clicked bar
-            const riskBars = document.querySelectorAll('[data-risk-level]');
-            riskBars.forEach(bar => {
-                if (bar.getAttribute('data-risk-level') === riskLevel) {
-                    bar.classList.add('active');
-                }
-            });
-
-            // Apply filter
-            document.getElementById('filterRisk').value = riskLevel;
-            activeFilters.risk = riskLevel;
-            applyFilters();
-        }
-
-        function scrollToSafeguard(index) {
-            // Switch to assessment tab
-            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            
-            document.querySelector('.tab:nth-child(2)').classList.add('active');
-            document.getElementById('assessment').classList.add('active');
-
-            // Clear filters to ensure the row is visible
-            clearFilters();
-
-            // Scroll to the specific row
-            setTimeout(() => {
-                const tbody = document.getElementById('tableBody');
-                const row = tbody.rows[index];
-                if (row) {
-                    row.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    
-                    // Highlight the row temporarily
-                    row.style.background = '#fef3c7';
-                    setTimeout(() => {
-                        row.style.background = '';
-                    }, 2000);
-                }
-            }, 100);
-        }
-
-        function clearChartHighlights() {
-            document.querySelectorAll('.bar-item').forEach(item => item.classList.remove('active'));
-            document.querySelectorAll('.gap-item').forEach(item => item.classList.remove('active'));
-        }
-
+        
         function applyFilters() {
-            const statusFilter = document.getElementById('filterStatus').value;
-            const riskFilter = document.getElementById('filterRisk').value;
-            const controlFilter = document.getElementById('filterControl').value;
-            const priorityFilter = document.getElementById('filterPriority').value;
-
-            activeFilters = {
-                status: statusFilter,
-                risk: riskFilter,
-                control: controlFilter,
-                priority: priorityFilter
-            };
-
-            const tbody = document.getElementById('tableBody');
-            const rows = tbody.getElementsByTagName('tr');
-            let visibleCount = 0;
-
-            for (let i = 0; i < rows.length; i++) {
-                const data = assessmentData[i];
-                let show = true;
-
-                // Status filter
+            var statusFilter = document.getElementById('filterStatus').value;
+            var riskFilter = document.getElementById('filterRisk').value;
+            var categoryFilter = document.getElementById('filterCategory').value;
+            var priorityFilter = document.getElementById('filterPriority').value;
+            
+            var framework = getCurrentFramework();
+            var tbody = document.getElementById('tableBody');
+            var rows = tbody.getElementsByTagName('tr');
+            var visibleCount = 0;
+            
+            for (var i = 0; i < rows.length; i++) {
+                var control = framework.controls[i];
+                var assess = framework.assessments[control.id] || {};
+                var show = true;
+                
                 if (statusFilter) {
                     if (statusFilter === 'unassessed') {
-                        show = show && (!data.status || data.status === '');
+                        show = show && (!assess.status || assess.status === '');
                     } else {
-                        show = show && (data.status === statusFilter);
+                        show = show && (assess.status === statusFilter);
                     }
                 }
-
-                // Risk filter
+                
                 if (riskFilter) {
-                    show = show && (data.risk === riskFilter);
+                    show = show && (assess.risk === riskFilter);
                 }
-
-                // Control filter
-                if (controlFilter) {
-                    show = show && (data.control.id == controlFilter);
+                
+                if (categoryFilter) {
+                    show = show && (control.category === categoryFilter);
                 }
-
-                // Priority filter
+                
                 if (priorityFilter) {
-                    show = show && (data.priority === priorityFilter);
+                    show = show && (assess.priority === priorityFilter);
                 }
-
+                
                 if (show) {
                     rows[i].classList.remove('filtered-out');
                     visibleCount++;
@@ -1151,159 +1423,402 @@
                     rows[i].classList.add('filtered-out');
                 }
             }
-
-            // Update filter result count
-            const resultBadge = document.getElementById('filterResultCount');
-            const hasActiveFilters = statusFilter || riskFilter || controlFilter || priorityFilter;
+            
+            var resultBadge = document.getElementById('filterResultCount');
+            var hasActiveFilters = statusFilter || riskFilter || categoryFilter || priorityFilter;
             
             if (hasActiveFilters) {
                 resultBadge.style.display = 'inline-block';
-                resultBadge.textContent = `${visibleCount} of ${rows.length} safeguards`;
+                resultBadge.textContent = visibleCount + ' of ' + rows.length + ' controls';
             } else {
                 resultBadge.style.display = 'none';
             }
-
-            // Show/hide no results message
-            const noResults = document.getElementById('noResults');
+            
+            var noResults = document.getElementById('noResults');
             if (visibleCount === 0 && hasActiveFilters) {
                 noResults.style.display = 'block';
             } else {
                 noResults.style.display = 'none';
             }
         }
-
+        
         function clearFilters() {
             document.getElementById('filterStatus').value = '';
             document.getElementById('filterRisk').value = '';
-            document.getElementById('filterControl').value = '';
+            document.getElementById('filterCategory').value = '';
             document.getElementById('filterPriority').value = '';
             
-            activeFilters = {
-                status: '',
-                risk: '',
-                control: '',
-                priority: ''
-            };
-
-            // Remove all filtered-out classes
-            const rows = document.getElementById('tableBody').getElementsByTagName('tr');
-            for (let row of rows) {
-                row.classList.remove('filtered-out');
+            var tbody = document.getElementById('tableBody');
+            var rows = tbody.getElementsByTagName('tr');
+            for (var i = 0; i < rows.length; i++) {
+                rows[i].classList.remove('filtered-out');
             }
-
-            // Remove active state from metric cards and charts
-            document.querySelectorAll('.metric-card').forEach(card => card.classList.remove('active'));
-            clearChartHighlights();
-
+            
             document.getElementById('filterResultCount').style.display = 'none';
             document.getElementById('noResults').style.display = 'none';
         }
 
-        function saveData() {
-            localStorage.setItem('cisAssessment', JSON.stringify(assessmentData));
-        }
-
-        function loadData() {
-            const saved = localStorage.getItem('cisAssessment');
-            if (saved) {
-                assessmentData = JSON.parse(saved);
+        function updateDashboard() {
+            var framework = getCurrentFramework();
+            if (!framework) return;
+            
+            var implemented = 0, partial = 0, notImplemented = 0;
+            var total = 0;
+            var categories = {};
+            
+            for (var i = 0; i < framework.controls.length; i++) {
+                var ctrl = framework.controls[i];
+                var assess = framework.assessments[ctrl.id] || {};
                 
-                Object.entries(assessmentData).forEach(([index, data]) => {
-                    const row = document.getElementById('tableBody').rows[index];
-                    if (row && data.status) {
-                        row.cells[4].querySelector('select').value = data.status;
-                        row.cells[5].querySelector('textarea').value = data.notes || '';
-                        if (data.risk) row.cells[6].querySelector('select').value = data.risk;
-                        if (data.priority) row.cells[7].querySelector('select').value = data.priority;
+                if (!categories[ctrl.category]) {
+                    categories[ctrl.category] = { total: 0, assessed: 0, score: 0 };
+                }
+                categories[ctrl.category].total++;
+                
+                if (assess.status) {
+                    categories[ctrl.category].assessed++;
+                    
+                    if (assess.status === 'implemented') {
+                        implemented++;
+                        total += 1;
+                        categories[ctrl.category].score += 1;
+                    } else if (assess.status === 'partial') {
+                        partial++;
+                        total += 0.5;
+                        categories[ctrl.category].score += 0.5;
+                    } else if (assess.status === 'not-implemented') {
+                        notImplemented++;
                     }
-                });
-                
-                updateDashboard();
+                }
             }
+            
+            var score = framework.controls.length > 0 ? Math.round((total / framework.controls.length) * 100) : 0;
+            
+            document.getElementById('overallScore').textContent = score + '%';
+            document.getElementById('implementedCount').textContent = implemented;
+            document.getElementById('partialCount').textContent = partial;
+            document.getElementById('notImplementedCount').textContent = notImplemented;
+            document.getElementById('progressBar').style.width = score + '%';
+            document.getElementById('progressBar').textContent = score + '%';
+            
+            var summaryHtml = '';
+            for (var cat in categories) {
+                var stats = categories[cat];
+                var compliance = stats.total > 0 ? Math.round((stats.score / stats.total) * 100) : 0;
+                summaryHtml += '<tr><td>' + cat + '</td><td>' + stats.total + '</td><td>' + stats.assessed + '</td><td><strong>' + compliance + '%</strong></td></tr>';
+            }
+            document.getElementById('summaryTable').innerHTML = summaryHtml;
         }
 
-        function loadSampleData() {
-            if (confirm('This will load sample assessment data. Continue?')) {
-                const samples = [
-                    {index: 0, status: 'implemented', risk: 'na', notes: 'Asset inventory maintained in ServiceNow CMDB'},
-                    {index: 1, status: 'partial', risk: 'medium', notes: 'Manual process, no automated detection'},
-                    {index: 13, status: 'not-implemented', risk: 'critical', priority: 'immediate', notes: 'MFA not enabled on customer portal'},
-                    {index: 14, status: 'not-implemented', risk: 'critical', priority: 'immediate', notes: 'Admin accounts do not require MFA'},
-                    {index: 19, status: 'partial', risk: 'high', notes: 'EDR deployed but not on all endpoints'}
-                ];
+        function switchTab(tabName) {
+            var tabs = document.querySelectorAll('.tab');
+            var contents = document.querySelectorAll('.tab-content');
+            
+            for (var i = 0; i < tabs.length; i++) {
+                tabs[i].classList.remove('active');
+            }
+            for (var i = 0; i < contents.length; i++) {
+                contents[i].classList.remove('active');
+            }
+            
+            document.querySelector('[data-tab="' + tabName + '"]').classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        }
 
-                samples.forEach(sample => {
-                    const row = document.getElementById('tableBody').rows[sample.index];
-                    if (row) {
-                        row.cells[4].querySelector('select').value = sample.status;
-                        row.cells[5].querySelector('textarea').value = sample.notes;
-                        if (sample.risk) row.cells[6].querySelector('select').value = sample.risk;
-                        if (sample.priority) row.cells[7].querySelector('select').value = sample.priority;
+        function openImportModal() {
+            document.getElementById('importFile').value = '';
+            document.getElementById('importModal').classList.add('show');
+        }
+
+        function closeImportModal() {
+            document.getElementById('importModal').classList.remove('show');
+        }
+        
+        function closeImportModalHandler() {
+            closeImportModal();
+        }
+
+        function processImport() {
+            console.log('Starting import');
+            var fileInput = document.getElementById('importFile');
+            var file = fileInput.files[0];
+            
+            if (!file) {
+                alert('Please select a file');
+                return;
+            }
+            
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    var controls = [];
+                    var assessments = {};
+                    
+                    if (file.name.endsWith('.json')) {
+                        var data = JSON.parse(e.target.result);
+                        controls = Array.isArray(data) ? data : (data.controls || []);
+                    } else if (file.name.endsWith('.csv')) {
+                        var text = e.target.result;
+                        var rows = [];
+                        var currentRow = [];
+                        var currentCell = '';
+                        var inQuotes = false;
                         
-                        assessmentData[sample.index].status = sample.status;
-                        assessmentData[sample.index].notes = sample.notes;
-                        assessmentData[sample.index].risk = sample.risk || '';
-                        assessmentData[sample.index].priority = sample.priority || '';
+                        for (var i = 0; i < text.length; i++) {
+                            var char = text[i];
+                            var nextChar = i + 1 < text.length ? text[i + 1] : '';
+                            
+                            if (char === '"') {
+                                if (inQuotes && nextChar === '"') {
+                                    currentCell += '"';
+                                    i++;
+                                } else {
+                                    inQuotes = !inQuotes;
+                                }
+                            } else if (char === ',' && !inQuotes) {
+                                currentRow.push(currentCell);
+                                currentCell = '';
+                            } else if ((char === '\n' || char === '\r') && !inQuotes) {
+                                if (char === '\r' && nextChar === '\n') i++;
+                                if (currentCell || currentRow.length > 0) {
+                                    currentRow.push(currentCell);
+                                    rows.push(currentRow);
+                                    currentRow = [];
+                                    currentCell = '';
+                                }
+                            } else {
+                                currentCell += char;
+                            }
+                        }
+                        
+                        if (currentCell || currentRow.length > 0) {
+                            currentRow.push(currentCell);
+                            rows.push(currentRow);
+                        }
+                        
+                        if (rows.length === 0) {
+                            alert('No data found in CSV');
+                            return;
+                        }
+                        
+                        var headers = rows[0].map(function(h) { return h.trim(); });
+                        var colSafeguard = -1, colTitle = -1, colCategory = -1, colDescription = -1;
+                        var colStatus = -1, colNotes = -1, colRisk = -1, colPriority = -1;
+                        
+                        for (var i = 0; i < headers.length; i++) {
+                            var h = headers[i].toLowerCase();
+                            if (h.includes('safeguard') || h === 'id') colSafeguard = i;
+                            else if (h === 'title') colTitle = i;
+                            else if (h === 'category') colCategory = i;
+                            else if (h === 'description') colDescription = i;
+                            else if (h.includes('implementation status') || h === 'status') colStatus = i;
+                            else if (h.includes('evidence') && h.includes('notes')) colNotes = i;
+                            else if (h.includes('risk level') || h === 'risk') colRisk = i;
+                            else if (h === 'priority') colPriority = i;
+                        }
+                        
+                        for (var i = 1; i < rows.length; i++) {
+                            var row = rows[i];
+                            if (row.length === 0 || row.every(function(cell) { return !cell.trim(); })) continue;
+                            
+                            var id = colSafeguard >= 0 && row[colSafeguard] ? row[colSafeguard].trim() : '';
+                            var title = colTitle >= 0 && row[colTitle] ? row[colTitle].trim() : '';
+                            var category = colCategory >= 0 && row[colCategory] ? row[colCategory].trim() : '';
+                            var description = colDescription >= 0 && row[colDescription] ? row[colDescription].trim() : '';
+                            var status = colStatus >= 0 && row[colStatus] ? row[colStatus].trim() : '';
+                            var notes = colNotes >= 0 && row[colNotes] ? row[colNotes].trim() : '';
+                            var risk = colRisk >= 0 && row[colRisk] ? row[colRisk].trim() : '';
+                            var priority = colPriority >= 0 && row[colPriority] ? row[colPriority].trim() : '';
+                            
+                            if (id && title && category) {
+                                controls.push({ id: id, title: title, category: category, description: description });
+                                
+                                var normalizedStatus = '';
+                                if (status) {
+                                    var s = status.toLowerCase().trim();
+                                    if (s.includes('fully')) normalizedStatus = 'implemented';
+                                    else if (s.includes('partial')) normalizedStatus = 'partial';
+                                    else if (s.includes('not implemented')) normalizedStatus = 'not-implemented';
+                                    else if (s.includes('not applicable') || s === 'na' || s === 'n/a') normalizedStatus = 'na';
+                                    else if (s === 'implemented') normalizedStatus = 'implemented';
+                                }
+                                
+                                var normalizedRisk = '';
+                                if (risk) {
+                                    var r = risk.toLowerCase().trim();
+                                    if (r.includes('critical')) normalizedRisk = 'critical';
+                                    else if (r.includes('high')) normalizedRisk = 'high';
+                                    else if (r.includes('medium')) normalizedRisk = 'medium';
+                                    else if (r.includes('low')) normalizedRisk = 'low';
+                                    else if (r === 'na' || r === 'n/a') normalizedRisk = 'na';
+                                }
+                                
+                                var normalizedPriority = '';
+                                if (priority) {
+                                    var p = priority.toLowerCase().trim();
+                                    if (p.includes('immediate') || p.includes('0-7')) normalizedPriority = 'immediate';
+                                    else if (p.includes('short') || p.includes('1-30')) normalizedPriority = 'short';
+                                    else if (p.includes('medium') || p.includes('1-3 month')) normalizedPriority = 'medium';
+                                    else if (p.includes('long') || p.includes('3-12')) normalizedPriority = 'long';
+                                }
+                                
+                                if (normalizedStatus || notes || normalizedRisk || normalizedPriority) {
+                                    assessments[id] = {};
+                                    if (normalizedStatus) assessments[id].status = normalizedStatus;
+                                    if (notes) assessments[id].notes = notes;
+                                    if (normalizedRisk) assessments[id].risk = normalizedRisk;
+                                    if (normalizedPriority) assessments[id].priority = normalizedPriority;
+                                }
+                            }
+                        }
                     }
-                });
-
-                updateDashboard();
-                saveData();
-                alert('Sample data loaded successfully!');
-            }
-        }
-
-        function clearData() {
-            if (confirm('This will clear all assessment data. Are you sure?')) {
-                localStorage.removeItem('cisAssessment');
-                location.reload();
-            }
+                    
+                    if (controls.length === 0) {
+                        alert('No valid controls found');
+                        return;
+                    }
+                    
+                    var framework = getCurrentFramework();
+                    framework.controls = framework.controls.concat(controls);
+                    for (var id in assessments) {
+                        framework.assessments[id] = assessments[id];
+                    }
+                    
+                    saveToStorage();
+                    renderAssessment();
+                    updateDashboard();
+                    closeImportModal();
+                    
+                    var msg = '✓ Imported ' + controls.length + ' control(s)!';
+                    if (Object.keys(assessments).length > 0) {
+                        msg += '\n✓ Loaded assessment data for ' + Object.keys(assessments).length + ' control(s)!';
+                    }
+                    alert(msg);
+                } catch (err) {
+                    console.error('Import error:', err);
+                    alert('Error importing file: ' + err.message);
+                }
+            };
+            
+            reader.readAsText(file);
         }
 
         function exportToCSV() {
-            let csv = 'Control,Safeguard,Title,Category,Implementation Status,Evidence/Notes,Risk Level,Priority\n';
+            var framework = getCurrentFramework();
+            if (!framework) {
+                alert('⚠️ No Framework Open\n\nPlease follow these steps:\n\n1. Go back to the main page\n2. Create a framework (click "➕ Add Framework")\n3. Open the framework (click "📂 Open")\n4. Add controls to assess\n5. Then you can export/print from the Export tab');
+                return;
+            }
             
-            Object.values(assessmentData).forEach(item => {
-                const row = [
-                    item.control.id,
-                    item.control.safeguard,
-                    `"${item.control.title}"`,
-                    `"${item.control.category}"`,
-                    item.status,
-                    `"${item.notes.replace(/"/g, '""')}"`,
-                    item.risk,
-                    item.priority
+            var csv = 'Safeguard,Title,Category,Implementation Status,Evidence/Notes,Risk Level,Priority\n';
+            
+            for (var i = 0; i < framework.controls.length; i++) {
+                var c = framework.controls[i];
+                var a = framework.assessments[c.id] || {};
+                var row = [
+                    c.id,
+                    '"' + c.title.replace(/"/g, '""') + '"',
+                    '"' + c.category.replace(/"/g, '""') + '"',
+                    a.status || '',
+                    '"' + ((a.notes || '').replace(/"/g, '""')) + '"',
+                    a.risk || '',
+                    a.priority || ''
                 ].join(',');
                 csv += row + '\n';
-            });
-
-            const blob = new Blob([csv], { type: 'text/csv' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `CIS_Assessment_${new Date().toISOString().split('T')[0]}.csv`;
-            a.click();
+            }
+            
+            showDownloadModal('CSV Export', csv, framework.name.replace(/[^a-z0-9]/gi, '_') + '_' + new Date().toISOString().split('T')[0] + '.csv', 'text/csv');
         }
 
         function exportToJSON() {
-            const exportData = {
+            var framework = getCurrentFramework();
+            if (!framework) {
+                alert('⚠️ No Framework Open\n\nPlease follow these steps:\n\n1. Go back to the main page\n2. Create a framework (click "➕ Add Framework")\n3. Open the framework (click "📂 Open")\n4. Add controls to assess\n5. Then you can export/print from the Export tab');
+                return;
+            }
+            
+            var data = {
                 exportDate: new Date().toISOString(),
-                assessment: assessmentData
+                framework: framework.name,
+                description: framework.description,
+                assessment: framework.assessments,
+                controls: framework.controls
             };
-
-            const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `CIS_Assessment_${new Date().toISOString().split('T')[0]}.json`;
-            a.click();
+            
+            var json = JSON.stringify(data, null, 2);
+            
+            showDownloadModal('JSON Export', json, framework.name.replace(/[^a-z0-9]/gi, '_') + '_' + new Date().toISOString().split('T')[0] + '.json', 'application/json');
+        }
+        
+        function showDownloadModal(title, content, filename, mimeType) {
+            var modal = document.createElement('div');
+            modal.className = 'modal show';
+            
+            // Convert to base64 to handle special characters
+            var base64Content = btoa(unescape(encodeURIComponent(content)));
+            var dataUri = 'data:' + mimeType + ';base64,' + base64Content;
+            
+            modal.innerHTML = `
+                <div class="modal-content" style="max-width: 800px;">
+                    <div class="modal-header">
+                        <h2>${title}</h2>
+                        <button class="close-btn" onclick="this.closest('.modal').remove()">&times;</button>
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <p style="margin-bottom: 15px; color: #2d3748; font-weight: 600;">✓ Your export is ready!</p>
+                        <p style="margin-bottom: 15px; color: #718096; font-size: 14px;">Click the download button below to save <strong>${filename}</strong></p>
+                        <div style="background: #f7fafc; padding: 20px; border-radius: 8px; text-align: center; margin-bottom: 20px;">
+                            <a href="${dataUri}" download="${filename}" class="btn btn-primary" style="display: inline-block; text-decoration: none; padding: 12px 24px; font-size: 16px;">
+                                📥 Download ${filename.endsWith('.csv') ? 'CSV' : 'JSON'}
+                            </a>
+                        </div>
+                        <p style="color: #718096; font-size: 13px; margin-bottom: 10px;">Preview:</p>
+                        <textarea readonly style="width: 100%; height: 300px; font-family: monospace; font-size: 11px; padding: 12px; border: 1px solid #e2e8f0; border-radius: 6px;">${content}</textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn btn-secondary" onclick="
+                            var txt = this.closest('.modal-content').querySelector('textarea');
+                            txt.select();
+                            document.execCommand('copy');
+                            alert('✓ Copied to clipboard!');
+                        ">📋 Copy to Clipboard</button>
+                        <button class="btn btn-secondary" onclick="this.closest('.modal').remove()">Close</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+        
+        function loadSampleData() {
+            if (!confirm('Load sample CIS controls?')) return;
+            
+            var samples = [
+                {id: '1.1', title: 'Establish Asset Inventory', category: 'Asset Management'},
+                {id: '1.2', title: 'Address Unauthorized Assets', category: 'Asset Management'},
+                {id: '2.1', title: 'Software Inventory', category: 'Software Assets'},
+                {id: '3.1', title: 'Data Management', category: 'Data Protection'},
+                {id: '6.3', title: 'MFA for External Applications', category: 'Access Management'}
+            ];
+            
+            var framework = getCurrentFramework();
+            framework.controls = framework.controls.concat(samples);
+            framework.assessments['1.1'] = {status: 'implemented', risk: 'low'};
+            framework.assessments['6.3'] = {status: 'not-implemented', risk: 'critical', priority: 'immediate'};
+            
+            saveToStorage();
+            renderAssessment();
+            updateDashboard();
         }
 
-        // Initialize on load
-        window.onload = function() {
-            initializeTable();
-            loadData();
-        };
+        function getCurrentFramework() {
+            return frameworks.find(function(f) { return f.id === currentFrameworkId; });
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
     </script>
 </body>
 </html>
